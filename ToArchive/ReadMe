@@ -1,0 +1,14 @@
+
+Installing Faery Tale Adventure on a harddrive:
+
+1) Create a drawer on your harddrive. (For example purposes I will assume
+that this drawer is named "Work:FTA".)
+
+2) Insert your original Faery Tale Adventure disk into DF0:
+
+3) From the CLI run the script "Install-FTA" with the name of the drawer
+from step 1 as a paramter. For example:
+
+    Install-FTA Work:FTA
+
+4) The script will say when it is done.

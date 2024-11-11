@@ -1,0 +1,35 @@
+.k path/a
+.bra {
+.ket }
+
+if exists "The Faery Tale Adventure:"
+	assign _FTA_TEMP_: "The Faery Tale Adventure:"
+
+	echo "Copying files from FTA disk."
+
+	copy _FTA_TEMP_:fonts "{path}/fonts" all
+	copy _FTA_TEMP_:hiscreen "{path}"
+	copy _FTA_TEMP_:p1a "{path}"
+	copy _FTA_TEMP_:p1b "{path}"
+	copy _FTA_TEMP_:p2a "{path}"
+	copy _FTA_TEMP_:p2b "{path}"
+	copy _FTA_TEMP_:p3a "{path}"
+	copy _FTA_TEMP_:p3b "{path}"
+	copy _FTA_TEMP_:page0 "{path}"
+	copy _FTA_TEMP_:songs "{path}"
+	copy _FTA_TEMP_:v6 "{path}"
+	copy _FTA_TEMP_:winpic "{path}"
+
+	echo "Copying image of FTA disk."
+
+	copyimage trackdisk.device 0 0 1760 "{path}/image"
+
+	echo "Copying program file FMain and icon."
+
+	copy FMain "{path}"
+	copy FMain.info "{path}"
+
+	assign _FTA_TEMP_:
+
+	echo "Done."
+endif

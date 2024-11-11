@@ -1,0 +1,116 @@
+/* name flags */
+
+#define NAME_UNIQUE	1		/* a unique person */
+#define NAME_THE	2		/* a unique thing */
+#define NAME_FEMALE	4		/* a female person */
+#define	NAME_PLURAL	8		/* has special pluralization */
+
+/* ImageFile describes the characteristics of a series of images on disk */
+
+typedef struct {
+	SHORT	start_sector;
+	SHORT	sector_count;
+	void	*where_loaded;
+} ImageFile;
+
+/* images describes the format of individual images within an image file */
+
+typedef struct {
+	ImageFile	*file;
+	void		*image_loc;		/* address of basic images */
+	void		*prog_loc;		/* address of programmable color array */
+	void		*mask_loc;		/* address of mask characters */
+	SHORT		image_width;
+	SHORT		image_height;
+	SHORT		image_count;
+} Images;
+
+/* Creature describes the features of an entire species */
+
+typedef struct {
+	ImageFile	*images;
+	BYTE	cross_section;		/* size as a target */
+	BYTE	mass;				/* heaviness for pushing, $ff = infinite */
+	BYTE	force;				/* pushing strength */
+	BYTE	hit_skill;			/* how well this kind can fight */
+	BYTE	behavior;			/* behavior type for this race */
+	BYTE	treasure_type;		/* what kinds of things this guy picks up */
+		/* note this may be not needed */
+	SHORT	walkbase;			/* work on this */
+	char	nameflags;
+	char	name[12];
+} Creature;
+
+/* Actor defines an instance of a Creature */
+
+typedef struct {
+	USHORT	xpos, ypos;
+	SHORT	altitude;
+	Creature *species;
+	SHORT	x_velocity, y_velocity;
+	SHORT	vitality;
+	SHORT	wealth;				/* how much is this guy carrying */
+	BYTE	facing;				/* direction we are facing */
+	BYTE	body_state;			/* walk, fight, fall, etc. */
+	BYTE	sub_state;			/* exact cycle of walk, etc. */
+	BYTE	weapon_ready;		/* what attack type */
+	BYTE	spell_ready;		/* what alternate action type */
+	BYTE	goal1, goal2;		/* what goals we shall attempt */
+	BYTE	plan1, plan2;		/* how we are to acieve them */
+	BYTE	tactic;				/* immediate tactic we are trying */
+	BYTE	success;			/* how well is our plan working */
+	BYTE	inventory[30];		/* 30-item inventory list */
+} Actor;
+
+/* Object describes the features of a prototype object */
+
+typedef struct {
+	char	*name;
+	ImageFile	*images;
+	BYTE	cross_section;		/* size as a target */
+	BYTE	mass;				/* heaviness for pushing, $ff = infinite */
+	BYTE	container;			/* if container, = capacity, else zero */
+	char	nameflags;
+	char	name[12];
+} Object;
+
+/* Token is an instance of a specific object */
+
+typedef struct {
+	USHORT	xpos, ypos;
+	SHORT	altitude;
+	SHORT	x_velocity, y_velocity;
+	Object	*prototype;
+} Token;
+
+/* any temporarily existing object, but mostly missiles in flight */
+
+typedef struct {
+	USHORT	xpos, ypos;
+	SHORT	altitude;
+	Object	*prototype;
+} Missile;
+
+/* describes the graphic representation of an operative spell */
+
+typedef struct {
+	USHORT	xpos, ypos;
+	SHORT	altitude;
+	BYTE	spelltype;
+	BYTE	duration;
+} Spell;
+
+/* Animation ties together the above into an on-screen image */
+
+typedef struct {
+	SHORT	rel_x, rel_y;		/* relative position on-screen */
+	SHORT	shadow_altitude;	/* all flying things have seperate shadows */
+	SHORT	image_index;		/* which image out of image file to use */
+	void	*piece;				/* pointer to actor or object */
+	BYTE	piecetype;			/* actor, object, etc. */
+	BYTE	onstage;			/* 0 = on-screen, 1 = nearby, 2 = out of play */
+	BYTE	cycle;				/* walk/fight animation cycle */
+} Animation;
+
+enum piecetypes (NO_PIECE, ACTOR, OBJECT, MISSILE, SPELL);
+

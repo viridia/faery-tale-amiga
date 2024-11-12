@@ -104,7 +104,7 @@ typedef struct {
 
 typedef struct {
 	SHORT	rel_x, rel_y;		/* relative position on-screen */
-	SHORT	shadow_altitude;	/* all flying things have seperate shadows */
+	SHORT	shadow_altitude;	/* all flying things have separate shadows */
 	SHORT	image_index;		/* which image out of image file to use */
 	void	*piece;				/* pointer to actor or object */
 	BYTE	piecetype;			/* actor, object, etc. */

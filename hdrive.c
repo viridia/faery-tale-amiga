@@ -41,7 +41,7 @@ int AllocDiskIO()
 	}
 	else
 	{
-		if ((diskport = CreatePort(0,0))==0) return 30;
+		if ((diskport = (struct MsgPort *)CreatePort(0,0))==0) return 30;
 		SETFN(AL_PORT);
 		if ((diskreq1=(struct IOExtTD *)CreateExtIO(diskport,sizeof(struct IOExtTD)))==0) return 31;
 		SETFN(AL_IOREQ);

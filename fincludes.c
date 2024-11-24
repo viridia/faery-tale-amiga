@@ -17,4 +17,6 @@
 #include "devices/input.h"
 #include "devices/inputevent.h"
 #include "devices/trackdisk.h"
+#include "devices/audio.h"
+#include "workbench/startup.h"
 

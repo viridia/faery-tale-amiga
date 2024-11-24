@@ -732,13 +732,13 @@ open_all()
 	openflags = 0;
 
 	if ((GfxBase = (struct GfxBase *)OpenLibrary("graphics.library",0)) == NULL) return 2;
-	if ((LayersBase = OpenLibrary("layers.library",0)) == NULL) return 2;
+	if ((LayersBase = (struct Library *)OpenLibrary("layers.library",0)) == NULL) return 2;
 	SETFN(AL_GBASE);		/* opened the graphics library */
 	oldview = GfxBase->ActiView;
 
 	if (!MakeBitMap(&work_bm,2,640,200)) return 2;
 
-	li = NewLayerInfo();
+	li = (struct Layer_Info *)NewLayerInfo();
 	InitRastPort(&rp_map);
 	InitRastPort(&rp_text);
 	InitRastPort(&rp_text2);
@@ -775,7 +775,7 @@ open_all()
 	font = (struct DiskFontHeader *) ((seg<<2)+8);
 	SETFN(AL_FONT);		/* opened the font */
 
-	tfont = OpenFont(&topaz_ta);
+	tfont = (struct  TextFont *)OpenFont(&topaz_ta);
 	SetFont(&rp_text,tfont);
 	SetFont(&rp_text2,tfont);
 	SetFont(&rp_map,tfont);
@@ -862,9 +862,9 @@ open_all()
 
 	/* allocate space for bitmap */
 	for (i=0; i<5; i++)
-	{	bm_page1->Planes[i] = AllocRaster(PHANTA_WIDTH,RAST_HEIGHT);
+	{	bm_page1->Planes[i] = (void *)AllocRaster(PHANTA_WIDTH,RAST_HEIGHT);
 		if(bm_page1->Planes[i] == NULL) return 4;
-		bm_page2->Planes[i] = AllocRaster(PHANTA_WIDTH,RAST_HEIGHT);
+		bm_page2->Planes[i] = (void *)AllocRaster(PHANTA_WIDTH,RAST_HEIGHT);
 		if(bm_page2->Planes[i] == NULL) return 5;
 	}
 
@@ -886,7 +886,7 @@ open_all()
 	vp_text.RasInfo = &ri_text;
 	MakeVPort( &v, &vp_text );
 
-	if (audioport = CreatePort(NULL,0))
+	if (audioport = (struct MsgPort *)CreatePort(NULL,0))
 	{
 		if (ioaudio = (struct IOAudio *)CreateExtIO(audioport,sizeof *ioaudio))
 		{	UBYTE	data = 0x0f;
@@ -908,24 +908,24 @@ open_all()
 		}
 	}
 
-	if ((wavmem = AllocMem(VOICE_SZ,MEMF_CHIP)) == NULL) return 16;
-	if ((scoremem = AllocMem(SCORE_SZ,0)) == NULL) return 17;
+	if ((wavmem = (unsigned char *)AllocMem(VOICE_SZ,MEMF_CHIP)) == NULL) return 16;
+	if ((scoremem = (unsigned char *)AllocMem(SCORE_SZ,0)) == NULL) return 17;
 	volmem = wavmem + S_WAVBUF;
 	init_music(new_wave,wavmem,volmem);
 	SETFN(AL_MUSIC);
 
-	if ((image_mem = AllocMem(IMAGE_SZ,MEMF_CHIP)) == NULL) return 6;
+	if ((image_mem = (unsigned char *)AllocMem(IMAGE_SZ,MEMF_CHIP)) == NULL) return 6;
 	SETFN(AL_IMAGE);
-	if ((sector_mem = AllocMem(SECTOR_SZ,MEMF_CHIP)) == NULL) return 7;
+	if ((sector_mem = (unsigned char *)AllocMem(SECTOR_SZ,MEMF_CHIP)) == NULL) return 7;
 	map_mem = sector_mem + SECTOR_OFF;
 	SETFN(AL_SECTOR);
-	if ((shape_mem = AllocMem(SHAPE_SZ,MEMF_CHIP)) == NULL) return 8;
+	if ((shape_mem = (unsigned char *)AllocMem(SHAPE_SZ,MEMF_CHIP)) == NULL) return 8;
 	SETFN(AL_SHAPE);
-	if ((shadow_mem = AllocMem(SHADOW_SZ,MEMF_CHIP)) == NULL) return 10;
+	if ((shadow_mem = (unsigned char *)AllocMem(SHADOW_SZ,MEMF_CHIP)) == NULL) return 10;
 	SETFN(AL_SHADOW);
-	if ((sample_mem = AllocMem(SAMPLE_SZ,MEMF_CHIP)) == NULL) return 11;
+	if ((sample_mem = (unsigned char *)AllocMem(SAMPLE_SZ,MEMF_CHIP)) == NULL) return 11;
 	SETFN(AL_SAMPLE);
-	if ((terra_mem = AllocMem(1024,MEMF_CHIP)) == NULL) return 34;
+	if ((terra_mem = (unsigned char *)AllocMem(1024,MEMF_CHIP)) == NULL) return 34;
 	SETFN(AL_TERR);
 
 	if (file = Open("v6",1005))
@@ -3009,7 +3009,6 @@ struct MsgPort *inputDevPort;
 struct IOStdReq *inputRequestBlock;
 struct Interrupt handlerStuff;
 
-extern struct MsgPort *CreatePort();
 extern struct IOStdReq *CreateStdIO();
 
 extern HandlerInterface();
@@ -3018,7 +3017,7 @@ add_device()
 {	SHORT error;
 
 	handler_data.laydown = handler_data.pickup = 0;
-	if ( (inputDevPort = CreatePort(0,0)) == NULL) return FALSE;
+	if ((inputDevPort = (struct MsgPort *)CreatePort(0,0)) == NULL) return FALSE;
 	inputRequestBlock = CreateStdIO(inputDevPort);
 	if(inputRequestBlock == 0) { DeletePort(inputDevPort); return FALSE; }
 

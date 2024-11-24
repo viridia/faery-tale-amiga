@@ -127,7 +127,7 @@ _set_course
 ;	if (mode != 4)
 
 		cmp.b	#4,d3				; if mode 4
-		beq		6$					; then don't do
+		beq		6$					; then don't go
 
 ;	{	if ((xabs>>1) > yabs) ydir = 0;	/* if SMART_SEEK */
 
@@ -842,7 +842,7 @@ UBYTE *into_chip(oldpointer,size) register UBYTE *oldpointer; long size;
 
 	if (TypeOfMem(oldpointer) & MEMF_CHIP) return oldpointer;
 
-	newpointer = AllocMem(size,MEMF_CHIP);
+	newpointer = (void *)AllocMem(size,MEMF_CHIP);
 	for (i=0; i<size; i++) newpointer[i] = *oldpointer++;
 	return newpointer;
 }
@@ -922,7 +922,7 @@ witch_fx(fp) register struct fpage *fp;
 	xh = hero_x - (map_x & 0xfff0);
 	yh = hero_y - (map_y & 0xffe0);
 
-	layer = CreateUpfrontLayer(li,rp_map.BitMap,0,0,16*19,6*32,
+	layer = (struct Layer *)CreateUpfrontLayer(li,rp_map.BitMap,0,0,16*19,6*32,
 		LAYERSIMPLE,NULL);
 	r = &rp_map; oldlayer = r->Layer; r->Layer = layer;
 

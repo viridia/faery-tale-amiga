@@ -127,7 +127,7 @@ _set_course
 ;	if (mode != 4)
 
 		cmp.b	#4,d3				; if mode 4
-		beq		6$					; then don't go
+		beq		6$					; then dont do
 
 ;	{	if ((xabs>>1) > yabs) ydir = 0;	/* if SMART_SEEK */
 

@@ -25,3 +25,12 @@ made over the years.
 
 Thus, I cannot say for certain exactly what the copyright status of this code is. However, whatever
 rights I do have, I hereby make freely available under an MIT-style permissive license.
+
+## Active Forks
+
+I'm not planning on making any changes to this code, it's purpose is mainly to serve as a historical
+reference (so please don't send me PRs). However, a number of folks have forked the code and are
+trying to get the game to run in various environments:
+
+* https://github.com/XarkLabs/faery-tale-amiga - an effort to getting the game running on "modern" hardware using SDL.
+* https://github.com/tomdionysus/faery-tale-amiga - targeted towards running the game on an Amiga emulator.

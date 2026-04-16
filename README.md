@@ -34,3 +34,5 @@ trying to get the game to run in various environments:
 
 * https://github.com/XarkLabs/faery-tale-amiga - an effort to getting the game running on "modern" hardware using SDL.
 * https://github.com/tomdionysus/faery-tale-amiga - targeted towards running the game on an Amiga emulator.
+* https://github.com/bacomatic/faery-tale-rs/tree/original-bugfix - Original source with bugs fixed and compiling with Aztec C 5.2a
+* https://github.com/bacomatic/faery-tale-rs/tree/research - An AI assisted reverse engineering research branch, which may be a helpful resource for anyone porting the game
